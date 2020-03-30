@@ -15,7 +15,6 @@ import ipaddress
 import json
 import queue
 import random
-import statistics
 import threading
 import time
 
@@ -40,10 +39,6 @@ HEADERS = {
 
 session = requests.Session()
 session.headers = HEADERS
-
-
-def average(l: list):
-    return sum(l) / len(l)
 
 
 def get_prefix(prefix: str) -> dict:
@@ -105,20 +100,6 @@ def reserve_address(address: str, description="allocated as part of a test") -> 
     return response.json()
 
 
-def calculate_stats(l: list):
-    """Add some useful stats."""
-
-    _l = list(l)
-
-    return {
-        'average': average([float(t) for t in _l]),
-        'standard_deviation': statistics.pstdev(_l),
-        'longest_call': max(_l),
-        'host_addresses': len(_l),
-        'total_duration': sum(_l)
-    }
-
-
 def test_get_next_free_address(prefix: dict) -> dict:
     """Use the get next free logic to allocate every address in prefix then deallocate."""
 
@@ -140,9 +121,6 @@ def test_get_next_free_address(prefix: dict) -> dict:
         start = time.time()
         if deallocate_address(address):
             report['deallocate']['data'][_address] = time.time() - start
-
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
 
     return report
 
@@ -182,9 +160,6 @@ def test_get_next_free_address_fragmented(prefix: dict) -> dict:
         if int(address_obj) % 2:
             deallocate_address(address)
 
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
-
     return report
 
 
@@ -210,14 +185,12 @@ def test_scattered_assignments(prefix: dict) -> dict:
         if deallocate_address(address):
             report['deallocate']['data'][_address] = time.time() - start
 
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
-
     return report
 
 
 def worker(prefix: dict):
     """Execute all 3 scenarios against prefix then save the report."""
+
     print('    testing with {}'.format(prefix['prefix']))
     report = {}
     start = time.time()
