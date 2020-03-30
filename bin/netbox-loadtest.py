@@ -15,10 +15,11 @@ import ipaddress
 import json
 import queue
 import random
-import requests
 import statistics
 import threading
 import time
+
+import requests
 from openpyxl import Workbook
 
 parser = argparse.ArgumentParser(description='Test the Netbox API.')
