@@ -21,21 +21,21 @@ import threading
 import time
 from openpyxl import Workbook
 
-# Statically apply your Auth/CSRF Tokens in HEADERs below.
-
-URL = 'http://netbox-frontend.cloud.phx3.gdg/api'
-HEADERS = {
-    'accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': 'Token xxxxxxxx',
-    'X-CSRFToken': 'xxxxxxx'
-}
-
 parser = argparse.ArgumentParser(description='Test the Netbox API.')
 parser.add_argument('parent_prefix', type=str, help='the prefix the worker should pull the child prefix from')
 parser.add_argument('prefix_length', type=int, help='the size of the prefix to carve out')
-parser.add_argument('workers', type=int, help='number of workers concurrenting working', nargs='?', default=1)
+parser.add_argument('workers', type=int, help='number of workers concurrenting working')
+parser.arg_argument('url', type=str, help='FQDN of netbox')
+parser.add_argument('token', type=str, help='Auth token for netbox API')
+
 args = parser.parse_args()
+
+URL = f'http://{ args.url }/api'
+HEADERS = {
+    'accept': 'application/json',
+    'Content-Type': 'application/json',
+    'Authorization': f'Token { args.token }'
+}
 
 session = requests.Session()
 session.headers = HEADERS
