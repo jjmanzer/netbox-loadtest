@@ -7,7 +7,7 @@ setup(
     author='Jarrod Manzer',
     author_email='jarrod.manzer@gmail.com',
     license='Apache',
-    description='a load test script for the netbox IPAM solution',
+    description='A load test script for the netbox IPAM solution',
     include_package_data=True,
     scripts=['bin/netbox-loadtest.py'],
     classifiers=[
