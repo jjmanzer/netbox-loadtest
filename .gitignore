@@ -1,0 +1,4 @@
+dist/
+build/
+netbox_loadtest.egg-info/
+*.xlsx
