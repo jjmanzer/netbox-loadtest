@@ -4,7 +4,7 @@ A tool to measure the performance of your NetBox API.
 Example
 
 ```
-netbox_load_test.py 10.0.0.0/8 20 1
+netbox-loadtest.py 10.0.0.0/8 29 1 $FQDN $TOKEN
 starting the 1 worker scenario
   starting worker thread 1 of 1 with 10.0.16.0/20
     testing with 10.0.16.0/20
