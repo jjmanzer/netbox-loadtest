@@ -9,7 +9,7 @@ setup(
     license='MIT',
     description='A load test script for the netbox IPAM solution.',
     include_package_data=True,
-    scripts=['bin/netbox-loadtest.py'],
+    scripts=['bin/netbox_loadtest.py'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
