@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='netbox-loadtest',
-    version='1.0.1',
+    version='2.0.0',
     url='https://github.com/jjmanzer/netbox-loadtest/',
     author='Jarrod Manzer',
     author_email='jjmanzer@godaddy.com',
