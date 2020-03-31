@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "netbox-loadtest"
+version = "2.0.1"
+description = "A load test script for the netbox IPAM solution."
+authors = ["Jarrod J Manzer <jjmanzer@godaddy.com>"]
+license = "MIT"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+]
+packages = [
+  { include = "bin/*.py" },
+]
+
+[[tool.poetry.source]]
+name = "GitHub"
+url = "https://github.com/jjmanzer/netbox-loadtest/"
+
+[tool.poetry.scripts]
+scripts = ["bin/netbox_loadtest.py"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+requests = "^2.23.0"
+openpyxl = "^3.0.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.4.1"
+pytest-cov = "^2.8.1"
+pytest-xdist = "^1.31.0"
+black = {version = "^19.10b0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
