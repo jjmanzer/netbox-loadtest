@@ -15,34 +15,11 @@ import ipaddress
 import json
 import queue
 import random
-import requests
-import statistics
 import threading
 import time
+
+import requests
 from openpyxl import Workbook
-
-parser = argparse.ArgumentParser(description='Test the Netbox API.')
-parser.add_argument('parent_prefix', type=str, help='the prefix the worker should pull the child prefix from')
-parser.add_argument('prefix_length', type=int, help='the size of the prefix to carve out')
-parser.add_argument('workers', type=int, help='number of workers concurrenting working')
-parser.add_argument('url', type=str, help='FQDN of netbox')
-parser.add_argument('token', type=str, help='Auth token for netbox API')
-
-args = parser.parse_args()
-
-URL = f'http://{ args.url }/api'
-HEADERS = {
-    'accept': 'application/json',
-    'Content-Type': 'application/json',
-    'Authorization': f'Token { args.token }'
-}
-
-session = requests.Session()
-session.headers = HEADERS
-
-
-def average(l: list):
-    return sum(l) / len(l)
 
 
 def get_prefix(prefix: str) -> dict:
@@ -104,20 +81,6 @@ def reserve_address(address: str, description="allocated as part of a test") -> 
     return response.json()
 
 
-def calculate_stats(l: list):
-    """Add some useful stats."""
-
-    _l = list(l)
-
-    return {
-        'average': average([float(t) for t in _l]),
-        'standard_deviation': statistics.pstdev(_l),
-        'longest_call': max(_l),
-        'host_addresses': len(_l),
-        'total_duration': sum(_l)
-    }
-
-
 def test_get_next_free_address(prefix: dict) -> dict:
     """Use the get next free logic to allocate every address in prefix then deallocate."""
 
@@ -139,9 +102,6 @@ def test_get_next_free_address(prefix: dict) -> dict:
         start = time.time()
         if deallocate_address(address):
             report['deallocate']['data'][_address] = time.time() - start
-
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
 
     return report
 
@@ -181,9 +141,6 @@ def test_get_next_free_address_fragmented(prefix: dict) -> dict:
         if int(address_obj) % 2:
             deallocate_address(address)
 
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
-
     return report
 
 
@@ -209,14 +166,12 @@ def test_scattered_assignments(prefix: dict) -> dict:
         if deallocate_address(address):
             report['deallocate']['data'][_address] = time.time() - start
 
-    report['allocate'].update(calculate_stats(report['allocate']['data'].values()))
-    report['deallocate'].update(calculate_stats(report['deallocate']['data'].values()))
-
     return report
 
 
 def worker(prefix: dict):
     """Execute all 3 scenarios against prefix then save the report."""
+
     print('    testing with {}'.format(prefix['prefix']))
     report = {}
     start = time.time()
@@ -295,6 +250,22 @@ report_queue = queue.Queue()
 """ Spawn some worker threads and load test the NetBox API and then make an excel spreadsheet about it."""
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Test the Netbox API.')
+    parser.add_argument('parent_prefix', type=str, help='the prefix the worker should pull the child prefix from')
+    parser.add_argument('prefix_length', type=int, help='the size of the prefix to carve out')
+    parser.add_argument('workers', type=int, help='number of workers concurrenting working')
+    parser.add_argument('url', type=str, help='FQDN of netbox')
+    parser.add_argument('token', type=str, help='Auth token for netbox API')
+    args = parser.parse_args()
+
+    URL = f'http://{ args.url }/api'
+    session = requests.Session()
+    session.headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': f'Token { args.token }'
+    }
+
     workbook = Workbook()
     worker_data = {}
 
@@ -309,7 +280,6 @@ if __name__ == "__main__":
             thread = threading.Thread(target=worker, args=(prefix,))
             thread.start()
             threads.append((thread, prefix))
-
         for thread, prefix in threads:
             thread.join()
             delete_prefix(prefix)
