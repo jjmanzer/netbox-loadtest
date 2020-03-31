@@ -280,7 +280,6 @@ if __name__ == "__main__":
             thread = threading.Thread(target=worker, args=(prefix,))
             thread.start()
             threads.append((thread, prefix))
-
         for thread, prefix in threads:
             thread.join()
             delete_prefix(prefix)
