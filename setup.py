@@ -6,7 +6,7 @@ setup(
     url='https://github.com/jjmanzer/netbox-loadtest/',
     author='Jarrod Manzer',
     author_email='jjmanzer@godaddy.com',
-    license='Apache',
+    license='MIT',
     description='A load test script for the netbox IPAM solution.',
     include_package_data=True,
     scripts=['bin/netbox-loadtest.py'],
