@@ -260,13 +260,13 @@ def add_worker_data_to_sheet(worker_data: dict, sheet: object):
 
             sheet.cell(
                 row=footer_row, column=column
-            ).value = f"=AVERAGE({lcolumn}4:{lcolumn}{row})"
+            ).value = f"=AVERAGE({ lcolumn }4:{ lcolumn }{ row })"
             sheet.cell(
                 row=footer_row + 1, column=column
-            ).value = f"=STDEV({lcolumn}4:{lcolumn}{row})"
+            ).value = f"=STDEV({ lcolumn }4:{ lcolumn }{ row })"
             sheet.cell(
                 row=footer_row + 2, column=column
-            ).value = f"=SUM({lcolumn}4:{lcolumn}{row})"
+            ).value = f"=SUM({ lcolumn }4:{ lcolumn }{ row })"
 
             for id, key in enumerate(
                 worker_report[test_name]["deallocate"]["data"].keys()
@@ -279,13 +279,13 @@ def add_worker_data_to_sheet(worker_data: dict, sheet: object):
 
             sheet.cell(
                 row=footer_row, column=column + 1
-            ).value = f"=AVERAGE({lcolumn2}4:{lcolumn2}{row})"
+            ).value = f"=AVERAGE({ lcolumn2 }4:{ lcolumn2 }{ row })"
             sheet.cell(
                 row=footer_row + 1, column=column + 1
-            ).value = f"=STDEV({lcolumn2}4:{lcolumn2}{row})"
+            ).value = f"=STDEV({ lcolumn2 }4:{ lcolumn2 }{ row })"
             sheet.cell(
                 row=footer_row + 2, column=column + 1
-            ).value = f"=SUM({lcolumn2}4:{lcolumn2}{row})"
+            ).value = f"=SUM({ lcolumn2 }4:{ lcolumn2 }{ row })"
 
 
 report_queue = queue.Queue()
