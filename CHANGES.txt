@@ -1,1 +1,3 @@
 v1.0.0, Mar 30, 2020 -- Initial release.
+v2.0.0, Apr 1, 2020 -- Change license to MIT.
+v2.0.1, Apr 1, 2020 -- Introduced poetry, black, isort and flake8 to CICD chain.
