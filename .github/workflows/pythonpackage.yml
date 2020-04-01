@@ -1,7 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: Python package
+name: Test Python Package
 
 on:
   push:
@@ -36,15 +36,15 @@ jobs:
         restore-keys: |
           poetry-${{ hashFiles('**/poetry.lock') }}
 
-    - name: Install Dependencies
+    - name: Install dependencies
       run: poetry install
       if: steps.cache.outputs.cache-hit != 'true'
 
-    - name: Check imports withs isort
+    - name: Check imports with isort
       run: |
         poetry run isort -c -rc
 
-    - name: Code Quality
+    - name: Check code quality with black
       run: poetry run black . --check
 
     - name: Lint with flake8
@@ -56,4 +56,4 @@ jobs:
 
     - name: Test with pytest
       run: |
-        poetry run pytest -n 2
+        poetry run pytest -n 2 --cov .
