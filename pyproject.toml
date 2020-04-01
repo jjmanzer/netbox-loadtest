@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "netbox-loadtest"
-version = "2.0.0"
+version = "2.0.1"
 description = "A load test script for the netbox IPAM solution."
 authors = ["Jarrod J Manzer <jjmanzer@godaddy.com>"]
 license = "MIT"
