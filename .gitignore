@@ -1,4 +1,8 @@
+.DS_Store
 dist/
 build/
 netbox_loadtest.egg-info/
 *.xlsx
+__pycache__
+.coverage
+.coverage.*
